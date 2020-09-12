@@ -1,14 +1,41 @@
 import React from 'react';
-import {Button} from 'antd'
 import './App.css'
+import {connect}from 'react-redux'
+// 引入路由组件
+import {
+    HashRouter as Router,
+    Switch,
+    Route
+} from 'react-router-dom'
+
+// 引入路由页面
+import Login from './pages/login/Login'
+import Admin from './pages/admin/Admin'
+
+
 class App extends React.Component{
-	render(){
-		return(
-		<div>
-		<Button type="primary">Button</Button>
-		</div>
-		);
-	}
+    render() {
+      return (
+          <Router>
+              <Switch>
+                  <Route path={"/login"} component={Login}/>
+                  <Route path={"/"} component={Admin}/>
+              </Switch>
+          </Router>
+      );
+    }
 }
 
-export default App;
+const mapStateToProps = (state)=>{
+    return {
+        
+    }
+};
+
+const mapDispatchToProps = (dispatch)=>{
+    return {
+
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
