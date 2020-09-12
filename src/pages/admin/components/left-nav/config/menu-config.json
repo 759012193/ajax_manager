@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "title": "首页",
+    "path": "/home",
+    "parentID": 0
+  },
+  {
+    "id": 2,
+    "title": "幼教资源管理",
+    "path": "/resource",
+    "parentID": 0
+  },
+  {
+    "id": 3,
+    "title": "职场人生管理",
+    "path": "/lifejob",
+    "parentID": 0
+  },
+  {
+    "id": 4,
+    "title": "活动专区管理",
+    "path": "/activities",
+    "parentID": 0
+  },
+  {
+    "id": 5,
+    "title": "直播课堂管理",
+    "path": "/live",
+    "parentID": 0
+  },
+  {
+    "id": 6,
+    "title": "设置中心",
+    "path": "/setting",
+    "parentID": 0,
+    "children": [
+      {
+        "id": 7,
+        "title": "账户设置",
+        "path": "/setting/account",
+        "parentID": 6
+      },
+      {
+        "id": 8,
+        "title": "会员统计",
+        "path": "/setting/member",
+        "parentID": 6
+      }
+    ]
+  }
+]

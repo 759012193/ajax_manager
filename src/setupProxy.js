@@ -1,13 +1,16 @@
 const {createProxyMiddleware} = require('http-proxy-middleware');
 
 module.exports = function (app) {
-    /*
+    
     app.use(
-        '/api',
+        '/bd_weather_diulei',
         createProxyMiddleware({
-            target: 'http://tingapi.ting.baidu.com',
+            target: 'http://api.map.baidu.com/telematics/v3',
             changeOrigin: true,
+			pathRewrite:{
+				'^/bd_weather_diulei':'/'
+			}
         })
     );
-    */
+   
 };
