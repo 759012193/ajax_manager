@@ -3,48 +3,56 @@
     "id": 1,
     "title": "首页",
     "path": "/home",
+    "icon": "iconfont icon-changjingguanli",
     "parentID": 0
   },
   {
     "id": 2,
     "title": "幼教资源管理",
     "path": "/resource",
+    "icon": "iconfont icon-gongnengdingyi",
     "parentID": 0
   },
   {
     "id": 3,
     "title": "职场人生管理",
     "path": "/lifejob",
+    "icon": "iconfont icon-hezuohuobanmiyueguanli",
     "parentID": 0
   },
   {
     "id": 4,
     "title": "活动专区管理",
     "path": "/activities",
+    "icon": "iconfont icon-yibiaopan",
     "parentID": 0
   },
   {
     "id": 5,
     "title": "直播课堂管理",
     "path": "/live",
+    "icon": "iconfont icon-icon_fabu",
     "parentID": 0
   },
   {
     "id": 6,
     "title": "设置中心",
     "path": "/setting",
+    "icon": "iconfont icon-icon_shezhi",
     "parentID": 0,
     "children": [
       {
         "id": 7,
         "title": "账户设置",
         "path": "/setting/account",
+        "icon": "iconfont icon-fuwudiqiu",
         "parentID": 6
       },
       {
         "id": 8,
         "title": "会员统计",
         "path": "/setting/member",
+        "icon": "iconfont icon-shenjing",
         "parentID": 6
       }
     ]

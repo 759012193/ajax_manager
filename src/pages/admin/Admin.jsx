@@ -21,6 +21,7 @@ import LifeJob from './../lifejob/LifeJob'
 import Activity from './../activity/Activity'
 import Live from './../live/Live'
 import Setting from './../setting/Setting'
+import NotFound from './../notFound/NotFound'
 const { Content, Footer} = Layout;
 
 // 引入路由组件
@@ -59,6 +60,8 @@ class Admin extends React.Component{
                                <Route path={"/activities"} component={Activity}/>
                                <Route path={"/live"} component={Live}/>
                                <Route path={"/setting"} component={Setting}/>
+                               <Route path={"/notfound"} component={NotFound}/>
+                               <Redirect to="/notfound" component={NotFound} />
                         </Switch>
                     </Content>
                     {/*右侧尾部*/}

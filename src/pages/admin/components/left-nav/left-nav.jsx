@@ -1,8 +1,9 @@
 import React from 'react';
 
 
-import {Link} from 'react-router-dom'
+import {Link,withRouter} from 'react-router-dom'
 import xl from './images/xiaoliao.png'
+import './fonts/iconfont.css'
 import './left-nav.css'
 import PropTypes from 'prop-types';
 import { Layout, Menu } from 'antd';
@@ -30,20 +31,25 @@ class LeftNav extends React.Component{
 	
 	_renderMenu(menuList){
 	        return menuList.map((item, index)=>{
+				const {collapsed} = this.props;
 	             // 1. 取出一级菜单数据
 	            if(!item.children){
 	                return (
-	                    <Item key={item.path} icon={<MenuUnfoldOutlined />}>
+	                    <Item key={item.path} >
 	                        <Link to={item.path}>
-	                            <span>{item.title}</span>
+							<span style={collapsed ? {fontSize: 25}: {}} className={item.icon} />
+                            <span style={collapsed ? {display: 'none'}: {}}>{item.title}</span>
 	                        </Link>
 	                    </Item>
 	                )
 	            }else {
 	                return (
-	                    <SubMenu icon={<UploadOutlined />} 
+	                    <SubMenu 
 	                        key={item.path}
-	                        title={<span>{item.title}</span>}>
+	                        title={<span>
+								<span  style={collapsed ? {fontSize: 25}: {}}  className={item.icon} />
+								<span style={collapsed ? {display: 'none'}: {}}>{item.title}</span>
+									</span>}>
 	                        {this._renderMenu(item.children)}
 	                    </SubMenu>
 	                )
@@ -52,17 +58,19 @@ class LeftNav extends React.Component{
 	    }
 	
 	render(){
+		const path = this.props.location.pathname;
+        console.log(path);
 		const {collapsed} = this.props;
 		const {menuList} = this.state;
 		return(
 		<Sider trigger={null} collapsible collapsed={this.props.collapsed}>
-		    <div className="logo">
+		    <div className="logo" style={collapsed ? {height: 100} : {}}>
 		                        <div className="avatar" style={collapsed ? {width: 50, height: 50} : {}}>
 		                            <img src={xl} alt=""/>
 		                        </div>
 		                        <h4 style={collapsed ? {display: 'none'} : {display: 'block'}}>引擎大总管</h4>
 		                    </div>
-		    <Menu theme="dark" mode="inline" defaultSelectedKeys={['/pron']}>
+		    <Menu theme="dark" mode="inline" defaultSelectedKeys={['/pron']} selectedKeys={[path]}>
 		        {this._renderMenu(menuList)}
 		    </Menu>
 		</Sider>
@@ -70,4 +78,4 @@ class LeftNav extends React.Component{
 	}
 }
 
-export default LeftNav;
+export default withRouter(LeftNav);
