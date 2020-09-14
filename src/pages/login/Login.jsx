@@ -2,13 +2,38 @@ import React from 'react'
 import {connect} from 'react-redux'
 import './css/login.css'
 import xl from './images/xiaoliao.png'
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button,message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import {checkLogin,checkLogOut} from './../../api/adminApi'
+import md5 from 'blueimp-md5'
+import config from './../../config/config'
+import {saveObj} from './../../tools/cache-tool'
 class Login extends React.Component{
     render() {
-        // 点击登录按钮
-        const onFinish = values => {
-            console.log('Received values of form: ', values);
+         // 点击登录按钮
+         const onFinish = values => {
+            console.log('表单提交的数据: ', values);
+            // 1. 对密码进行MD5加密
+            const md5_pwd = md5(values.password, config.KEY);
+            // 2. 发起登录请求
+            checkLogin(values.account, md5_pwd).then((result)=>{
+                let res = result.data;
+                console.log(res);
+                // 2.1 判断
+                if(res && res.status === 1){
+                     // 提示用户
+                     message.success(res.msg);
+                     // 把管理员信息本地化
+                    saveObj('yq_admin_key',res.data);
+                    // 跳转到主面板
+                    this.props.history.replace('/');
+                }else {
+                    message.warn(res.msg);
+                }
+            }).catch((error)=>{
+                // console.log(error);
+                message.error('网络出现一点问题!');
+            });
         };
     
         return (

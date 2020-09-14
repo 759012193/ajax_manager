@@ -22,6 +22,7 @@ import Activity from './../activity/Activity'
 import Live from './../live/Live'
 import Setting from './../setting/Setting'
 import NotFound from './../notFound/NotFound'
+import {isLogin} from './../../api/adminApi'
 const { Content, Footer} = Layout;
 
 // 引入路由组件
@@ -40,6 +41,14 @@ class Admin extends React.Component{
     };
 
     render() {
+
+        // 判断是否是登录的
+        if(!isLogin()){
+
+            console.log(isLogin());
+            // 如果没有登录, 则切换到登录界面
+            return <Redirect to={'/login'}/>
+        }
         return (
             <Layout className="admin-panel">
                 {/*左侧*/}
