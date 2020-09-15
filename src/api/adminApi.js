@@ -34,3 +34,22 @@ export const  saveAdmin = (adminObj)=>{
 export const  removeAdmin = ()=>{
     removeObj(config.YQ_ADMIN_KEY);
 };
+
+
+/*
+ 6. 获取管理员信息
+*/
+export const  getAdmin = ()=>{
+  return  getObj(config.YQ_ADMIN_KEY);
+};
+
+/*
+7. 修改管理员信息
+*/
+export const changeAdminMsg = (token, account_name, account_icon)=> ajax('/api/auth/admin/edit', {token, account_name, account_icon}, 'post');
+
+/*
+8. 修改管理员密码
+*/
+export const changeAdminPwd = (token, old_pwd, new_pwd)=> ajax('/api/auth/admin/reset_pwd', {token, old_pwd, new_pwd}, 'post');
+
