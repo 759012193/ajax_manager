@@ -4,14 +4,14 @@ import {connect} from 'react-redux'
 // 引入消息发布组件
 import PubSub from 'pubsub-js'
 // 引入组件
-import { Form, Input, Button, Card, message} from 'antd';
+import { Form, Input, Button, Card, message,Modal} from 'antd';
 // 引入配置文件
 import config from './../../../config/config'
 // 引入组件
 import YQUploadImg from './../../../components/YQUploadImg' // 上传图片
 import EditPassword from './../components/EditPassword'
 // 引入接口文件
-import {getAdmin, changeAdminMsg, saveAdmin} from './../../../api/adminApi'
+import {getAdmin, changeAdminMsg, saveAdmin,removeAdmin} from './../../../api/adminApi'
 
 
 class AccountSetting extends React.Component{
@@ -32,6 +32,7 @@ class AccountSetting extends React.Component{
         this.formRef = React.createRef();
     }
 
+    
     componentDidMount() {
         // console.log(getAdmin());
         // 更新管理员的数据
