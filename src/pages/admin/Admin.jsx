@@ -42,30 +42,7 @@ class Admin extends React.Component{
         });
     };
 
-    componentDidMount() {
-        // 去订阅token失效信息
-        PubSub.subscribe('tokenOut', ()=>{
-            // 1. 移动本地管理员信息
-            removeAdmin();
-            // 2. 提示用户
-            Modal.warning({
-                title: '您的登录信息已经失效!',
-                content: (
-                    <div>
-                        <p>请重新登录后再操作</p>
-                    </div>
-                ),
-                onOk: ()=>{
-                    this.props.history.replace('/login');
-                }
-            })
-
-        });
-    }
     
-    componentWillUnmount() {
-        PubSub.unsubscribe('tokenOut');
-    }
 
     render() {
 

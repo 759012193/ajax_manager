@@ -59,21 +59,21 @@ const data = [
     {
         id: '1',
         job_name: '真正的孤独（经典好文）',
-        job_img: 'http://localhost:3001/uploads/images/admin/admin_avatar-1600158534752.jpeg',
+        job_img: 'http://localhost:5000/uploads/images/lifejob/1591240250817.png',
         job_author: '静盼花来开',
         is_focus: false
     },
     {
         id: '2',
         job_name: '真正的孤独（经典好文）',
-        job_img: 'http://localhost:3001/uploads/images/admin/admin_avatar-1600158534752.jpeg',
+        job_img: 'http://localhost:5000/uploads/images/lifejob/1591240250817.png',
         job_author: '静盼花来开',
         is_focus: false
     },
     {
         id: '3',
         job_name: '真正的孤独（经典好文）',
-        job_img: 'http://localhost:3001/uploads/images/admin/admin_avatar-1600158534752.jpeg',
+        job_img: 'http://localhost:5000/uploads/images/lifejob/1591240250817.png',
         job_author: '静盼花来开',
         is_focus: true
     },
