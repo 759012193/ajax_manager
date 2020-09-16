@@ -5,8 +5,11 @@ import {connect} from 'react-redux'
 import Moment from 'moment'
 
 // 引入接口
-import {getJobPre, getJobFamily, addOneJob} from './../../../api/lifejob'
+import {getJobPre, getJobFamily, addOneJob, editOneJob} from './../../../api/lifejob'
 import {getAdmin} from './../../../api/adminApi'
+
+// 引入存储到本地的工具方法
+import {getObj} from './../../../tools/cache-tool'
 
 // 引入上传图片组件
 import YQUploadImg from './../../../components/YQUploadImg'
@@ -25,17 +28,44 @@ class AddOrEdit extends React.Component {
             imageUrl: '', // 封面图
             focusImageUrl: '', // 首页焦点图
             jobContent: '', // 人生内容
+            jobId: '', // id编号
 
             jobPre: [],
             jobFamily: []
-        }
+        };
+
+        this.jobFormRef = React.createRef();
+        this.jobLifeEditorRef = React.createRef();
     }
 
     componentDidMount() {
+        // 0. 处理编辑状态页面刷新的情况 (返回上一届页面)
+        if(getObj('life_job_edit_tag')=== 'edit' && !this.props.location.state){
+            // 清除当前页面中的所有状态
+            this.setState = ()=> false;
+            // 返回上一级界面
+            this.props.history.goBack();
+        }
+
+        // 获取上一个界面传递的数据
+        if(this.props.location.state){
+           const jobItem = this.props.location.state.job;
+           if(jobItem){
+               // 1. 往表单中注入数据
+               this.jobFormRef.current.setFieldsValue(jobItem);
+               // 2. 更新状态机
+               this.setState({
+                   imageUrl: jobItem.job_img, // 封面图
+                   focusImageUrl: jobItem.focus_img, // 首页焦点图
+                   jobContent: jobItem.job_content, // 人生内容
+                   jobId: jobItem.id // id编号
+               });
+           }
+        }
 
         // 1.获取学前所属分类
         getJobPre().then((result) => {
-            console.log(result);
+            // console.log(result);
             if (result.data && result.data.status === 1) {
                 this.setState({
                     jobPre: result.data.data
@@ -47,7 +77,7 @@ class AddOrEdit extends React.Component {
 
         // 2.获取所属家园分类
         getJobFamily().then((result) => {
-            console.log(result);
+            // console.log(result);
             if (result.data && result.data.status === 1) {
                 this.setState({
                     jobFamily: result.data.data
@@ -67,31 +97,47 @@ class AddOrEdit extends React.Component {
             // console.log(job_time);
 
             // 2. 容错处理
-            const {imageUrl, focusImageUrl, jobContent} = this.state;
+            const {imageUrl, focusImageUrl, jobId} = this.state;
             // 封面图不能没有
             if (!imageUrl) {
                 message.warn('请上传封面图片!');
                 return;
             }
             // 内容不能为空
-            console.log(jobContent);
+            const  jobContent = this.jobLifeEditorRef.current.getContent();
             if (!jobContent || jobContent === '<p></p>') {
                 message.warn('请填写人生内容!');
                 return;
             }
 
             // 3. 调用接口
-            // token, job_name, job_img, job_author, job_publish_time, job_content, job_pre_edu_id, job_family_edu_id, focus_img
-            addOneJob(getAdmin().token, values.job_name, imageUrl, values.job_author, job_time, jobContent, values.job_pre_edu_id, values.job_family_edu_id, focusImageUrl).then((result)=>{
-                if(result.data && result.data.status === 1){
-                    message.success(result.data.msg);
-                    // 回到列表页面
-                    this.props.history.goBack();
-                }
-            }).catch(()=>{
-                message.error('添加人生失败!');
-            });
-
+            /*console.log(jobId);
+            debugger;*/
+            if(jobId){ // 编辑
+                editOneJob(getAdmin().token, jobId, values.job_name, imageUrl, values.job_author, job_time, jobContent, values.job_pre_edu_id, values.job_family_edu_id, focusImageUrl).then((result)=>{
+                    if(result.data && result.data.status === 1){
+                        message.success(result.data.msg, 1);
+                        // 回到列表页面
+                        this.props.history.goBack();
+                    }else {
+                        message.error(result.data.msg, 1);
+                    }
+                }).catch(()=>{
+                    message.error('编辑人生失败!', 1);
+                });
+            }else { // 添加
+                addOneJob(getAdmin().token, values.job_name, imageUrl, values.job_author, job_time, jobContent, values.job_pre_edu_id, values.job_family_edu_id, focusImageUrl).then((result)=>{
+                    if(result.data && result.data.status === 1){
+                        message.success(result.data.msg, 1);
+                        // 回到列表页面
+                        this.props.history.goBack();
+                    }else {
+                        message.error(result.msg, 1);
+                    }
+                }).catch(()=>{
+                    message.error('添加人生失败!', 1);
+                });
+            }
         };
 
         // 表单内容的布局
@@ -110,12 +156,13 @@ class AddOrEdit extends React.Component {
             },
         };
 
-        const {jobPre, jobFamily} = this.state;
+        const {jobPre, jobFamily, imageUrl, focusImageUrl, jobContent, jobId} = this.state;
         return (
-            <Card title="新增人生资源">
+            <Card title={jobId ? "编辑人生资源" : "新增人生资源"}>
                 <Form
                     {...layout}
                     onFinish={onFinish}
+                    ref={this.jobFormRef}
                 >
                     <Form.Item
                         label="人生名称"
@@ -196,6 +243,7 @@ class AddOrEdit extends React.Component {
                         <YQUploadImg
                             upLoadBtnTitle={"上传封面图"}
                             upLoadName={"job_img"}
+                            upDefaultImage={imageUrl}
                             upLoadAction={"/api/auth/life_job/upload_life_job"}
                             successCallBack={(name) => {
                                 this.setState({
@@ -211,6 +259,7 @@ class AddOrEdit extends React.Component {
                         <YQUploadImg
                             upLoadBtnTitle={"上传焦点图"}
                             upLoadName={"job_img"}
+                            upDefaultImage={focusImageUrl}
                             upLoadAction={"/api/auth/life_job/upload_life_job"}
                             successCallBack={(name) => {
                                 this.setState({
@@ -225,17 +274,15 @@ class AddOrEdit extends React.Component {
                         wrapperCol={{span: 20}}
                     >
                         <YQRichTextEditor
+                            ref={this.jobLifeEditorRef}
                             uploadName={'job_img'}
                             uploadAction={'/api/auth/life_job/upload_life_job'}
-                            successCallBack={(content) => {
-                            this.setState({
-                                jobContent: content
-                            })
-                        }}/>
+                            htmlContent={jobContent}
+                        />
                     </Form.Item>
                     <Form.Item {...tailLayout}>
                         <Button type="primary" htmlType="submit">
-                            添加
+                            {jobId ? "修改" : "添加"}
                         </Button>
                         <Divider type="vertical"/>
                         <Button type="danger" htmlType="submit">

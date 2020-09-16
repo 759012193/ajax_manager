@@ -13,8 +13,8 @@ class LifeJob extends React.Component{
     render() {
         return (
             <Switch>
-                <Route path={"/lifejob/add-edit"} component={AddOrEdit}/>
-                <Route path={"/lifejob"} component={LifeList}/>
+                <Route exact path={"/lifejob/add-edit"} component={AddOrEdit}/>
+                <Route exact path={"/lifejob"} component={LifeList}/>
                 <Route component={NotFound}/>
             </Switch>
         )

@@ -1,5 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {ContentUtils} from 'braft-utils'
 import {Upload} from 'antd'
@@ -14,7 +13,23 @@ class YQRichTextEditor extends React.Component {
     static propTypes = {
         uploadName: PropTypes.string.isRequired, // 上传图片的key
         uploadAction: PropTypes.string.isRequired, // 上传图片的接口地址
-        successCallBack: PropTypes.func.isRequired
+        htmlContent: PropTypes.string  // 如果调用者有传递内容, 则接受, 没则不收
+    };
+
+    // 父组件传递数据给子组件(接收处)
+    componentWillReceiveProps(nextProps, nextContext) {
+        // console.log(nextProps.htmlContent);
+        if(nextProps.htmlContent){
+            this.setState({
+                // 放入数据
+                editorState: BraftEditor.createEditorState(nextProps.htmlContent)
+            });
+        }
+    }
+
+    // 提供给外部一个函数, 返回数据
+    getContent = ()=>{
+       return  this.state.editorState.toHTML()
     };
 
     state = {
@@ -24,8 +39,6 @@ class YQRichTextEditor extends React.Component {
 
     // 内容发生改变
     handleChange = (editorState) => {
-        // console.log(editorState.toHTML());
-        this.props.successCallBack && this.props.successCallBack(editorState.toHTML());
         this.setState({
             editorState: editorState
         })
@@ -63,6 +76,7 @@ class YQRichTextEditor extends React.Component {
         }
     };
 
+    // 配置外部的控件
     extendControls = [
         {
             key: 'antd-uploader',
@@ -102,4 +116,4 @@ class YQRichTextEditor extends React.Component {
     }
 }
 
-export default connect(null, null)(YQRichTextEditor);
+export default YQRichTextEditor;
