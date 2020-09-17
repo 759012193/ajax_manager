@@ -1,12 +1,19 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component} from "react"
+import {Switch, Route} from "react-router-dom"
+import LiveList from "./pages/live-list";
+import AddLive from "./pages/add-live";
+import EditLive from "./pages/edit-live";
+import NotFound from './../notFound/NotFound'
 
-class Live extends React.Component{
+export default class Live extends Component {
     render() {
         return (
-           <div style={{backgroundColor: 'skyblue'}}>直播课堂</div>
+            <Switch>
+                <Route path={"/live/add-live"} component={AddLive}/>
+                <Route path={"/live/edit-live"} component={EditLive}/>
+                <Route path={"/live"} component={LiveList}/>
+                <Route component={NotFound}/>
+            </Switch>
         )
     }
 }
-
-export default connect(null, null)(Live);

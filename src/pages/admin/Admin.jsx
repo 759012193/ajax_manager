@@ -17,7 +17,7 @@ import {
 
 import RightHeader from './components/right-header/right-header'
 import LeftNav from './components/left-nav/left-nav'
-import Home from './../home/home'
+import Home from './../home/Home'
 import Resource from './../resource/Resource'
 import LifeJob from './../lifejob/LifeJob'
 import Activity from './../activity/Activity'

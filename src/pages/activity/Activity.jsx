@@ -1,12 +1,20 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import {Switch, Route} from 'react-router-dom'
 
-class Activity extends React.Component{
+import ActivitiesList from './pages/activities-list'
+import ActivitiesAdd from './pages/activities-add'
+import ActivitiesEdit from './pages/activities-edit'
+import NotFound from './../notFound/NotFound'
+
+export default class Activity extends React.Component{
     render() {
         return (
-           <div style={{backgroundColor: 'gold'}}>活动专区</div>
+            <Switch>
+                <Route path={"/activities/add-activities"} component={ActivitiesAdd}/>
+                <Route path={"/activities/edit-activities"} component={ActivitiesEdit}/>
+                <Route path={"/activities"} component={ActivitiesList}/>
+                <Route component={NotFound}/>
+            </Switch>
         )
     }
 }
-
-export default connect(null, null)(Activity);
