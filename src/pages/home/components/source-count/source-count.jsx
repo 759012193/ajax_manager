@@ -1,20 +1,54 @@
 import React from 'react'
 import ReactEcharts  from 'echarts-for-react'
+import { Card, message} from 'antd'
 
-import { Card } from 'antd'
+import {getSourceCount} from './../../../../api/homeApi'
 
 export default class SourceCount extends React.Component{
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data: []
+        }
+    }
+
+    componentDidMount() {
+        this._loadData();
+    }
+
+    _loadData = ()=>{
+       getSourceCount().then((result)=>{
+           if(result.data && result.data.status === 1){
+               
+               let tempArr = [];
+               for(let k in result.data.data){
+                   tempArr.push(result.data.data[k]);
+               }
+               // 更新状态机
+               this.setState({
+                  data:  tempArr
+               });
+           }
+       }).catch((error)=>{
+           console.log(error);
+           message.error('获取统计数据失败!');
+       })
+    };
+
+
     getOption = ()=>{
       return {
           xAxis: {
               type: 'category',
-              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+              data: ['活动', '职场', '直播', '幼教']
           },
           yAxis: {
               type: 'value'
           },
           series: [{
-              data: [120, 200, 150, 80, 70, 110, 130],
+              data: this.state.data,
               type: 'bar'
           }]
       }
